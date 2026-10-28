@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Go Quest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="welcome" id="welcomePage">
+        <div class="label">AN INTERACTIVE WEIQI ADVENTURE</div>
+
+        <div class="stones">
+            <span class="black-stone"></span>
+            <span class="white-stone"></span>
+        </div>
+
+        <h1>MINI GO QUEST</h1>
+        <p class="subtitle">Your First Go Adventure</p>
+        <p class="description">
+            Discover an ancient game of strategy.<br>
+            Learn the rules. Complete challenges.<br>
+            Capture your first stone!
+        </p>
+
+        <button id="startBtn">Start Quest →</button>
+
+        <p class="footer">15-MINUTE EXPERIENCE · NO EXPERIENCE NEEDED</p>
+    </main>
+
+    <section id="level1Page" class="level-page hidden">
+        <div class="level-container">
+            <p class="level-label">MINI GO QUEST · LEVEL 01</p>
+
+            <h2>Discover Weiqi</h2>
+            <p class="level-subtitle">
+                Every great journey begins with a story.
+            </p>
+
+            <div class="video-container">
+                <video id="level1Video" controls playsinline>
+                    <source src="videos/discover-weiqi.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+            <p class="level-description">
+                Discover the history of Weiqi before learning how to play.
+            </p>
+
+            <button id="nextLevelBtn">
+                Continue to Level 2 →
+            </button>
+        </div>
+    </section>
+
+    <section id="level2Page" class="level-page hidden">
+        <div class="level-container">
+            <p class="level-label">MINI GO QUEST · LEVEL 02</p>
+
+            <h2>Learn the Rules</h2>
+
+            <p class="level-subtitle">
+                Learn the basics. Capture your first stone.
+            </p>
+
+            <div class="video-container">
+                <video id="level2Video" controls playsinline>
+                    <source src="videos/how-to-play.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+            <p class="level-description">
+                Watch carefully! You'll use these rules
+                in your upcoming challenges.
+            </p>
+
+            <button id="startChallengesBtn">
+                Start Challenges →
+            </button>
+        </div>
+    </section>
+
+    <section id="level3Page" class="level-page hidden">
+        <div class="level-container">
+            <p class="level-label">MINI GO QUEST · LEVEL 03</p>
+            <h2>Capture Challenges</h2>
+            <p class="level-subtitle">
+                Think carefully. Find the winning move!
+            </p>
+
+            <div class="challenge-card">
+                <p class="challenge-number" id="challengeNumber">
+                    CHALLENGE 1 OF 3
+                </p>
+
+                <h3 id="challengeTitle">Your First Capture</h3>
+
+                <p id="challengeInstruction">
+                    You are Black. Capture the white stone in one move!
+                </p>
+
+
+                <div class="board-wrapper">
+                    <div id="goBoard" class="go-board"></div>
+                    <div id="moveOverlay" class="move-overlay" aria-hidden="true">
+                        <span id="moveOverlayIcon"></span>
+                    </div>
+                </div>
+
+
+                <p id="challengeFeedback" class="challenge-feedback">
+                    Tap an intersection to place your black stone.
+                </p>
+
+                <button id="previousChallengeBtn" class="secondary-btn hidden">
+                    ← Previous Challenge
+                </button>
+
+                <button id="retryBtn" class="secondary-btn hidden">
+                    Try Again
+                </button>
+
+                <button id="nextChallengeBtn" class="hidden">
+                    Next Challenge →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quest Complete Page -->
+    <section id="completePage" class="level-page hidden">
+        <div class="completion-card">
+
+            <div class="completion-trophy">🏆</div>
+
+            <p class="completion-label">
+                ALL 3 CHALLENGES CLEARED
+            </p>
+
+            <h1>Quest Complete!</h1>
+
+            <p class="completion-description">
+                You've mastered the basics of Weiqi and
+                unlocked your first secret technique.
+            </p>
+
+            <div class="technique-card">
+                <p class="technique-label">
+                    SECRET TECHNIQUE UNLOCKED
+                </p>
+
+                <h2>The Ladder</h2>
+
+                <p>
+                    Keep your opponent in atari until
+                    their stones are captured.
+                </p>
+            </div>
+
+            <div class="completion-actions">
+                <button id="friendGameBtn" class="completion-primary">
+                    Play 9×9 With a Friend →
+                </button>
+
+                <button id="backToChallengesBtn" class="completion-secondary">
+                    ← Back to Challenges
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Capture One Rules Page -->
+    <section id="friendRulesPage" class="level-page hidden">
+
+        <div class="friend-rules-card">
+
+            <p class="match-label">FRIEND MATCH</p>
+
+            <h1>Capture One</h1>
+
+            <p class="rules-subtitle">
+                A quick 9×9 Weiqi challenge for two players.
+            </p>
+
+            <div class="rules-content">
+                <div class="rule-item">
+                    <span class="rule-number">01</span>
+                    <p>Black plays first.</p>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">02</span>
+                    <p>Take turns placing one stone on an empty intersection.</p>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">03</span>
+                    <p>Surround your opponent's stones to capture them.</p>
+                </div>
+
+                <div class="rule-item">
+                    <span class="rule-number">04</span>
+                    <p><strong>The first player to capture at least one stone wins!</strong></p>
+                </div>
+            </div>
+
+            <button id="startFriendMatchBtn" class="completion-primary">
+                Start Match →
+            </button>
+
+            <button id="rulesBackBtn" class="completion-secondary">
+                ← Back to Quest Complete
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- 9x9 Friend Match -->
+    <section id="friendMatchPage" class="level-page hidden">
+
+        <div class="friend-match-container">
+
+            <p class="match-label">MINI GO QUEST</p>
+            <h1>Capture One</h1>
+
+            <!-- White player -->
+            <div class="player-panel" id="whitePlayerPanel">
+                <div class="stone-bowl">
+                    <div class="bowl-stones white-stones">
+                        <span></span><span></span><span></span>
+                        <span></span><span></span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>White Player</h3>
+                    <p id="whitePlayerStatus">Waiting...</p>
+                </div>
+            </div>
+
+            <!-- Turn indicator -->
+            <div id="friendTurnIndicator" class="turn-indicator">
+                Black's Turn
+            </div>
+
+            <!-- Game board -->
+
+            <div class="board-wrapper friend-board-wrapper">
+                <div id="friendBoard" class="go-board"></div>
+
+                <div id="friendWinOverlay" class="friend-win-overlay hidden">
+                    <div class="friend-win-card">
+                        <p>MATCH COMPLETE</p>
+                        <h2 id="friendWinnerText">Black Wins!</h2>
+                        <span>First capture wins!</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Black player -->
+            <div class="player-panel" id="blackPlayerPanel">
+                <div class="stone-bowl">
+                    <div class="bowl-stones black-stones">
+                        <span></span><span></span><span></span>
+                        <span></span><span></span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Black Player</h3>
+                    <p id="blackPlayerStatus">Your turn!</p>
+                </div>
+            </div>
+
+            <!-- Game result -->
+            <p id="friendGameMessage" class="friend-game-message"></p>
+
+            <div class="friend-match-actions">
+                <button id="restartFriendGameBtn">
+                    Restart Match
+                </button>
+
+                <button id="backToCompleteBtn">
+                    ← Back to Quest Complete
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

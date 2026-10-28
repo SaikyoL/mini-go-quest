@@ -1,0 +1,775 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #F7F5F0;
+    color: #252525;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.welcome {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.label {
+    color: #776C5D;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.stones {
+    display: flex;
+    margin: 35px 0 15px;
+}
+
+.black-stone,
+.white-stone {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+}
+
+.black-stone {
+    background: #252525;
+    box-shadow: 2px 4px 8px #0003;
+}
+
+.white-stone {
+    background: white;
+    border: 1px solid #ddd;
+    margin-left: -12px;
+    box-shadow: 2px 4px 8px #0002;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 7vw, 68px);
+    margin: 15px 0;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #776C5D;
+}
+
+.description {
+    line-height: 2;
+    font-size: 14px;
+    margin: 25px 0 35px;
+}
+
+button {
+    padding: 17px 45px;
+    border: none;
+    border-radius: 50px;
+    background: #252525;
+    color: white;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+/* Only animate normal buttons, not Go board intersections */
+button:not(.intersection):hover {
+    background: #776C5D;
+    transform: translateY(-2px);
+}
+
+.footer {
+    margin-top: 45px;
+    color: #999;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.level-page {
+    min-height: 100vh;
+    padding: 55px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.level-container {
+    width: 100%;
+    max-width: 850px;
+}
+
+.level-label {
+    color: #776C5D;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 6vw, 55px);
+    margin: 20px 0;
+}
+
+.level-subtitle {
+    color: #776C5D;
+    font-size: 17px;
+    margin-bottom: 35px;
+}
+
+.video-container {
+    width: 100%;
+    background: #252525;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px #0002;
+}
+
+.video-container video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.level-description {
+    color: #776C5D;
+    font-size: 14px;
+    margin: 30px 0;
+    line-height: 1.8;
+}
+
+
+.challenge-card {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 28px 18px 36px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px #0000000D;
+}
+
+.challenge-number {
+    color: #776C5D;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.challenge-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin: 12px 0;
+}
+
+#challengeInstruction {
+    color: #776C5D;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.go-board {
+    width: min(100%, 450px);
+    aspect-ratio: 1;
+    margin: 25px auto;
+    padding: 0;
+    background: #D9B77F;
+    border: 10px solid #C69B62;
+    border-radius: 12px;
+    position: relative;
+    touch-action: manipulation;
+    box-shadow: 0 8px 18px #00000020;
+}
+
+.board-line {
+    position: absolute;
+    background: #70532F;
+    pointer-events: none;
+}
+
+.board-line.horizontal {
+    height: 1px;
+    left: 5%;
+    width: 90%;
+}
+
+.board-line.vertical {
+    width: 1px;
+    top: 5%;
+    height: 90%;
+}
+
+.intersection {
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.intersection.black::after,
+.intersection.white::after {
+    content: "";
+    position: absolute;
+    inset: 5%;
+    border-radius: 50%;
+    box-shadow: 1px 2px 4px #0004;
+}
+
+.intersection.black::after {
+    background: #252525;
+}
+
+.intersection.white::after {
+    background: #FFFFFF;
+    border: 1px solid #999;
+}
+
+.challenge-feedback {
+    min-height: 25px;
+    color: #776C5D;
+    font-size: 14px;
+}
+
+.secondary-btn {
+    background: #776C5D;
+}
+
+
+/* Keep every intersection fixed on the board */
+.intersection,
+.intersection:hover {
+    transform: translate(-50%, -50%);
+    background: transparent;
+}
+
+/* Transparent black stone preview */
+.intersection:not(.black):not(.white):not(:disabled):hover::after {
+    content: "";
+    position: absolute;
+    inset: 5%;
+    border-radius: 50%;
+    background: rgba(37, 37, 37, 0.4);
+    box-shadow: 1px 2px 4px #0002;
+}
+
+/* Existing stones should never move or change on hover */
+.intersection.black:hover,
+.intersection.white:hover {
+    background: transparent;
+}
+
+/* Hide preview on touch devices */
+@media (hover: none) {
+    .intersection:not(.black):not(.white):hover::after {
+        content: none;
+    }
+}
+
+
+/* Wrapper for board feedback animation */
+.board-wrapper {
+    position: relative;
+    width: min(100%, 450px);
+    margin: 25px auto;
+}
+
+.board-wrapper .go-board {
+    width: 100%;
+    margin: 0;
+}
+
+/* Transparent check / cross */
+.move-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+}
+
+.move-overlay span {
+    font-family: Arial, sans-serif;
+    font-size: clamp(100px, 24vw, 190px);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.move-overlay.correct span {
+    color: rgba(35, 170, 80, 0.55);
+}
+
+.move-overlay.wrong span {
+    color: rgba(220, 50, 50, 0.55);
+}
+
+.move-overlay.show {
+    animation: moveFeedback 0.8s ease-out forwards;
+}
+
+@keyframes moveFeedback {
+    0% {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+}
+
+
+/* Quest Complete Page */
+.completion-card {
+    max-width: 580px;
+    margin: 45px auto;
+    padding: 45px 35px;
+    background: #ffffff;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.completion-trophy {
+    font-size: 65px;
+    margin-bottom: 18px;
+}
+
+.completion-label,
+.technique-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #998369;
+}
+
+.completion-card h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(32px, 6vw, 46px);
+    margin: 15px 0;
+    color: #252525;
+}
+
+.completion-description {
+    color: #776c5d;
+    line-height: 1.8;
+    max-width: 420px;
+    margin: 0 auto 30px;
+}
+
+.technique-card {
+    background: #f7f5f0;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.technique-card h2 {
+    font-family: "Playfair Display", serif;
+    color: #252525;
+    margin: 12px 0;
+}
+
+.technique-card p:last-child {
+    color: #776c5d;
+    line-height: 1.7;
+}
+
+.completion-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.completion-primary,
+.completion-secondary {
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.completion-primary {
+    background: #252525;
+    color: white;
+    border: 1px solid #252525;
+}
+
+.completion-secondary {
+    background: transparent;
+    color: #252525;
+    border: 1px solid #b7aa98;
+}
+
+@media (max-width: 480px) {
+    .completion-card {
+        margin: 20px auto;
+        padding: 35px 20px;
+    }
+}
+
+
+/* 9x9 Friend Match */
+
+.friend-match-container {
+    width: min(100%, 520px);
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.match-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #998369;
+    font-weight: 700;
+}
+
+.friend-match-container h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 36px;
+    color: #252525;
+    margin: 10px 0;
+}
+
+.match-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #776c5d;
+    margin-bottom: 25px;
+}
+
+.player-panel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border-radius: 14px;
+    text-align: left;
+    margin: 12px 0;
+    border: 2px solid transparent;
+}
+
+.player-panel.active {
+    border-color: #b18a4c;
+    background: #fffaf1;
+}
+
+.player-panel h3 {
+    font-size: 16px;
+    color: #252525;
+    margin: 0 0 5px;
+}
+
+.player-panel p {
+    font-size: 13px;
+    color: #776c5d;
+    margin: 0;
+}
+
+/* Decorative stone bowls */
+.stone-bowl {
+    width: 65px;
+    height: 55px;
+    border-radius: 50%;
+    background: #b88b54;
+    border: 5px solid #95683e;
+    box-shadow: 0 5px 0 #76502f;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.bowl-stones {
+    position: absolute;
+    inset: 4px;
+}
+
+.bowl-stones span {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+}
+
+.bowl-stones span:nth-child(1) {
+    left: 5px;
+    top: 4px;
+}
+
+.bowl-stones span:nth-child(2) {
+    left: 23px;
+    top: 5px;
+}
+
+.bowl-stones span:nth-child(3) {
+    left: 13px;
+    top: 17px;
+}
+
+.bowl-stones span:nth-child(4) {
+    left: 31px;
+    top: 19px;
+}
+
+.bowl-stones span:nth-child(5) {
+    left: 1px;
+    top: 20px;
+}
+
+.black-stones span {
+    background: #252525;
+}
+
+.white-stones span {
+    background: #fafafa;
+    border: 1px solid #b7b7b7;
+}
+
+.turn-indicator {
+    background: #eae5dd;
+    color: #252525;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 700;
+    margin: 16px 0;
+}
+
+.friend-board-wrapper {
+    width: 100%;
+    max-width: 450px;
+    margin: 15px auto;
+}
+
+.friend-board-wrapper .go-board {
+    width: 100%;
+}
+
+.friend-game-message {
+    color: #776c5d;
+    font-weight: 600;
+    min-height: 24px;
+}
+
+.friend-match-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.friend-match-actions button {
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#restartFriendGameBtn {
+    background: #252525;
+    color: white;
+    border: none;
+}
+
+#backToCompleteBtn {
+    background: transparent;
+    color: #252525;
+    border: 1px solid #b7aa98;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .friend-match-container {
+        padding: 10px;
+        margin: 5px auto;
+    }
+
+    .friend-match-container h1 {
+        font-size: 30px;
+    }
+
+    .match-description {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .player-panel {
+        padding: 9px 12px;
+        margin: 8px 0;
+    }
+
+    .stone-bowl {
+        transform: scale(0.85);
+    }
+
+    .turn-indicator {
+        margin: 10px 0;
+    }
+}
+
+
+/* Capture One Rules Page */
+
+.friend-rules-card {
+    max-width: 520px;
+    margin: 45px auto;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.friend-rules-card h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 40px;
+    color: #252525;
+    margin: 12px 0;
+}
+
+.rules-subtitle {
+    color: #776c5d;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.rules-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #f7f5f0;
+    border-radius: 12px;
+}
+
+.rule-number {
+    color: #b18a4c;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.rule-item p {
+    margin: 0;
+    color: #252525;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.friend-rules-card button {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+}
+
+@media (max-width: 480px) {
+    .friend-rules-card {
+        margin: 20px auto;
+        padding: 30px 20px;
+    }
+
+    .friend-rules-card h1 {
+        font-size: 32px;
+    }
+
+    .rule-item {
+        padding: 13px;
+    }
+}
+
+/* Friend Match: correct hover preview for both players */
+
+#friendBoard .intersection:not(.black):not(.white):not(:disabled):hover::after {
+  background: rgba(30, 30, 30, 0.35);
+}
+
+#friendBoard.white-turn .intersection:not(.black):not(.white):not(:disabled):hover::after {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(80, 80, 80, 0.5);
+}
+
+
+/* Friend Match winner overlay */
+.friend-win-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+}
+
+.friend-win-card {
+  width: 85%;
+  padding: 28px 15px;
+  background: rgba(255, 253, 248, 0.92);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.friend-win-card p {
+  color: #9a7744;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.friend-win-card h2 {
+  font-family: "Playfair Display", serif;
+  color: #252525;
+  font-size: clamp(28px, 6vw, 38px);
+  margin: 0 0 10px;
+}
+
+.friend-win-card span {
+  color: #776c5d;
+  font-size: 13px;
+}
