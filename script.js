@@ -234,6 +234,19 @@ const challenges = [
 
 let currentChallenge = 0;
 
+let challenge3Mistakes = 0;
+
+const challengeHint = document.getElementById("challengeHint");
+
+function recordChallenge3Mistake() {
+    challenge3Mistakes++;
+
+    if (challenge3Mistakes >= 2) {
+        challengeHint.classList.remove("hidden");
+    }
+}
+
+
 const ladderTargets = [
     [2, 3],
     [3, 3],
@@ -279,6 +292,10 @@ function resetChallenge() {
     previousChallengeBtn.classList.toggle(
         "hidden",
         currentChallenge === 0
+    );
+    challengeHint.classList.toggle(
+        "hidden",
+        currentChallenge !== 2 || challenge3Mistakes < 2
     );
 
     renderBoard();
@@ -351,6 +368,7 @@ function playMove(row, col) {
 
         if (!result) {
             feedback.textContent = "Illegal move. Try another point.";
+            recordChallenge3Mistake();
             return;
         }
 
@@ -381,9 +399,9 @@ function playMove(row, col) {
         if (targetGroup.liberties.size !== 1) {
             feedback.textContent =
                 "Not quite! That move doesn't threaten White. Try again!";
-
             retryBtn.classList.remove("hidden");
             showMoveFeedback(false);
+            recordChallenge3Mistake();
             return;
         }
 
@@ -464,6 +482,7 @@ startChallengesBtn.addEventListener("click", () => {
     level3Page.classList.remove("hidden");
 
     currentChallenge = 0;
+    challenge3Mistakes = 0;
     resetChallenge();
     window.scrollTo(0, 0);
 });
