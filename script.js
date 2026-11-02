@@ -478,9 +478,13 @@ function playMove(row, col) {
         nextChallengeBtn.classList.remove("hidden");
         showMoveFeedback(true);
         nextChallengeBtn.textContent = "Next Challenge →";
+
     } else {
         feedback.textContent =
-            "Not quite! Look for the group's last liberty.";
+            "Not quite! Look for the group's last liberty. Press Retry to try again.";
+
+        challengeLocked = true; // Lock the board after a wrong move
+
         retryBtn.classList.remove("hidden");
         showMoveFeedback(false);
     }
