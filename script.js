@@ -161,8 +161,9 @@ function findWhiteEscape(board) {
         escapedBoard, row, col
     );
 
-    // White escapes only if it gains more liberties.
-    if (escapedGroup.liberties.size > 1) {
+    // White still plays a legal escape even if it remains in atari.
+    // This makes the final white move visible before Black captures.
+    if (escapedGroup && escapedGroup.liberties.size >= 1) {
         return {
             row,
             col,
@@ -176,6 +177,7 @@ function findWhiteEscape(board) {
 
 let boardState = [];
 let challengeSolved = false;
+let challengeLocked = false;
 
 // Challenge 1: White has only one liberty at (4, 5).
 
@@ -274,6 +276,8 @@ function resetChallenge() {
     });
 
     challengeSolved = false;
+    challengeLocked = false;
+    moveOverlay.classList.remove("show", "correct", "wrong");
 
     document.getElementById("challengeNumber").textContent =
         `CHALLENGE ${currentChallenge + 1} OF ${challenges.length}`;
@@ -335,7 +339,7 @@ function renderBoard() {
                 point.disabled = true;
             }
 
-            if (challengeSolved) {
+            if (challengeSolved || challengeLocked) {
                 point.disabled = true;
             }
 
@@ -356,30 +360,38 @@ function renderBoard() {
 
 
 function playMove(row, col) {
-    if (challengeSolved || boardState[row][col]) return;
+    if (challengeSolved || challengeLocked || boardState[row][col]) return;
 
     const challenge = challenges[currentChallenge];
 
-    // Challenge 3: use real Go rules.
+    // Challenge 3: every wrong move ends the attempt immediately.
     if (currentChallenge === 2) {
-        const result = simulateMove(
-            boardState, row, col, "black"
-        );
-
-        if (!result) {
-            feedback.textContent = "Illegal move. Try another point.";
+        const failChallenge3 = (message) => {
+            feedback.textContent = `${message} Press Retry to try again.`;
+            challengeLocked = true;
+            retryBtn.classList.remove("hidden");
             recordChallenge3Mistake();
+            showMoveFeedback(false);
+            renderBoard();
+        };
+
+        const result = simulateMove(boardState, row, col, "black");
+        if (!result) {
+            failChallenge3("Wrong move! That point is not a legal move.");
             return;
         }
 
+        // Reject self-atari in this teaching puzzle (legal in Go, but
+        // not a useful attacking move in this ladder).
+        const blackGroup = getGroup(result, row, col);
+        if (blackGroup.liberties.size === 1) {
+            failChallenge3("Wrong move! Your black stones have only one liberty left.");
+            return;
+        }
 
-        const targetGroup = getGroup(result, 2, 3);
-
-        // Check whether the target white group is still on the board.
         if (isLadderCaptured(result)) {
             boardState = result;
             challengeSolved = true;
-
             feedback.innerHTML = `
   <strong>SECRET TECHNIQUE UNLOCKED!</strong><br>
   You just discovered the Ladder!<br>
@@ -387,7 +399,6 @@ function playMove(row, col) {
   put your opponent's stones in atari,
   chasing them until they are captured.
 `;
-
             nextChallengeBtn.classList.remove("hidden");
             nextChallengeBtn.textContent = "Complete Quest →";
             showMoveFeedback(true);
@@ -395,35 +406,55 @@ function playMove(row, col) {
             return;
         }
 
-        // Black must put the target group in atari.
-        if (targetGroup.liberties.size !== 1) {
-            feedback.textContent =
-                "Not quite! That move doesn't threaten White. Try again!";
-            retryBtn.classList.remove("hidden");
-            showMoveFeedback(false);
-            recordChallenge3Mistake();
+        const targetGroup = getGroup(result, 2, 3);
+        if (!targetGroup || targetGroup.liberties.size !== 1) {
+            failChallenge3("Wrong move! Put the white group in atari (one liberty left).");
             return;
         }
 
-        // Correct attacking move.
+        // Accept only moves that actually reduce the target group's
+        // liberties. This avoids irrelevant moves that merely leave it
+        // in atari and otherwise confuse the automated white reply.
+        const previousTarget = getGroup(boardState, 2, 3);
+        if (!previousTarget || targetGroup.liberties.size >= previousTarget.liberties.size) {
+            failChallenge3("Wrong move! You need to tighten the chase on White.");
+            return;
+        }
+
 
         boardState = result;
-        renderBoard();
-
         const escape = findWhiteEscape(boardState);
 
         if (escape) {
             boardState = escape.board;
 
-            feedback.textContent =
-                "White escaped! Keep chasing!";
+            // Check White's liberties after escaping
+            const escapedWhiteGroup = getGroup(
+                boardState,
+                escape.row,
+                escape.col
+            );
 
-            renderBoard();
+            // Wrong chase: White now has 3 or more liberties
+            if (
+                escapedWhiteGroup &&
+                escapedWhiteGroup.liberties.size >= 3
+            ) {
+                failChallenge3(
+                    "Wrong move! White escaped with three or more liberties. Keep White under pressure!"
+                );
+                return;
+            }
+
+            feedback.textContent =
+                "White escaped! Your turn — keep chasing!";
+
         } else {
             feedback.textContent =
-                "White cannot escape! Keep attacking!";
+                "White has no legal escape. Your turn — capture White!";
         }
 
+        renderBoard();
         return;
 
     }
